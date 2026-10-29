@@ -1,0 +1,12 @@
+HMFAN
+
+This repository contains modifications and research code built on BasicSR:
+https://github.com/XPixelGroup/BasicSR
+
+BasicSR is distributed under the Apache License 2.0. Third-party components
+and dependencies, including NATTEN and code adapted from other open-source
+projects, remain subject to their respective licenses and attribution terms.
+
+The HMFAN-specific modifications include hierarchical memory fusion,
+RangeGate, selective Fourier-domain modulation, experiment configurations,
+evaluation utilities, and released pretrained models.

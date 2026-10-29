@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+
+# Environments / editors
+.env
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+
+# Runtime outputs
+results/
+tb_logger/
+wandb/
+plt/
+*.log
+
+# Local datasets
+datasets/*
+!datasets/README.md
+
+# Training outputs; keep released pretrained models
+experiments/*
+!experiments/pretrained_models/
+experiments/pretrained_models/*
+!experiments/pretrained_models/HMFAN/
+!experiments/pretrained_models/HMFAN/*.pth

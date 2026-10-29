@@ -1,0 +1,69 @@
+# Canonical HMFAN release configuration.
+# The full BasicSR train/test options under options/ are the source of truth.
+architecture:
+  type: HMFAN
+  num_in_ch: 3
+  num_out_ch: 3
+  num_feat: 60
+  num_block: 4
+  depth: 4
+  num_head: 6
+  kernel_sizes: [7, 9, 11]
+  dilations: [[1, 1, 1], [9, 7, 5]]
+  dw_sizes: [1, 3, 5, 7]
+  expanded_ratio: 1.0
+  squeeze_factor: 4
+  rel_pos_bias: true
+
+  intra_mf:
+    enabled: true
+    memory_indices: [0, 1, 2]
+    routing_reduction: 8
+    routing_type: static
+
+  inter_mf:
+    enabled: true
+    num_prev: 2
+    scale: 1.0
+
+  range_gate:
+    enabled: true
+    mode: softmax
+
+  hfma:
+    num_heads: 6
+    fourier_heads: 2
+    num_bands: 3
+    fourier_channels: 20
+    reduced_channels: 12
+    fft_norm: ortho
+    grouped_1x1_groups: 2
+
+training:
+  dataset: DF2K
+  global_batch_size: 32
+  optimizer: Adam
+  betas: [0.9, 0.99]
+  loss: L1
+  ema_decay: 0.999
+  x2:
+    initialization: scratch
+    gt_crop: 128
+    initial_lr: 5.0e-4
+    total_iter: 500000
+    milestones: [250000, 400000, 450000, 475000]
+    gamma: 0.5
+  x3:
+    initialization: HMFAN_x2 params_ema
+    gt_crop: 192
+    initial_lr: 2.0e-4
+    total_iter: 250000
+    milestones: [125000, 200000, 225000, 240000]
+    gamma: 0.5
+  x4:
+    initialization: HMFAN_x2 params_ema
+    gt_crop: 256
+    initial_lr: 2.0e-4
+    total_iter: 250000
+    milestones: [125000, 200000, 225000, 240000]
+    gamma: 0.5

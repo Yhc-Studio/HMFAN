@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use HMFAN in your research, please cite the accompanying manuscript."
+title: "Hierarchical Memory Fusion with Adaptive Range Modeling for Lightweight Image Super-Resolution"
+type: software
+authors:
+  - family-names: Liu
+    given-names: Wei
+  - family-names: Ye
+    given-names: Jianting
+  - family-names: Chen
+    given-names: Qing
+  - family-names: Sun
+    given-names: Yiming
+version: 1.0.0
+date-released: 2026-10-29
+license: Apache-2.0
+keywords:
+  - image super-resolution
+  - lightweight neural networks
+  - image restoration
+  - Fourier modeling
+  - attention
+
+repository-code: "https://github.com/Yhc-Studio/HMFAN"

@@ -1,0 +1,90 @@
+# general settings
+name: HMFAN_x4_Test2K_DIV2K
+model_type: SRModel
+scale: 4
+num_gpu: 1
+manual_seed: 0
+
+datasets:
+  test_1:
+    name: val_DIV2K
+    type: PairedImageDataset
+    dataroot_gt: datasets/DIV2K/HR
+    dataroot_lq: datasets/DIV2K/LR_bicubic/X4
+    filename_tmpl: "{}x4"
+    io_backend:
+      type: disk
+
+  test_2:
+    name: val_Test2K
+    type: PairedImageDataset
+    dataroot_gt: datasets/Test2K/HR
+    dataroot_lq: datasets/Test2K/LR_bicubic/X4
+    # filename_tmpl: "{}x4"
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: HMFAN
+  num_in_ch: 3
+  num_out_ch: 3
+  num_feat: 60
+  num_block: 4
+  expanded_ratio: 1
+  squeeze_factor: 4
+  depth: 4
+  num_head: 6
+  kernel_sizes: [7, 9, 11]
+  dilations: [[1, 1, 1], [9, 7, 5]]
+  rel_pos_bias: true
+  dw_sizes: [1, 3, 5, 7]
+  upscale: 4
+  upsampler: 'pixelshuffledirect'
+
+  # Hierarchical Memory Fusion (HMF)
+  # Intra-MF
+  use_bdr: true
+  memory_indices: [0, 1, 2]
+  routing_reduction: 8
+  routing_type: static
+
+  # Inter-MF
+  use_cgmf: true
+  cgmf_num_prev: 2
+  cgmf_scale: 1.0
+
+  # RangeGate
+  use_range_gate: true
+  gate_mode: 'softmax'
+  gate_hidden: ~
+
+  # Hybrid Fourier Modulated Attention (HFMA)
+  num_heads: 6
+  fourier_heads: 2
+  num_bands: 3
+
+
+# path
+path:
+  pretrain_network_g: experiments/pretrained_models/HMFAN/HMFAN_x4.pth
+  param_key_g: params_ema
+  strict_load_g: true
+
+# validation settings
+val:
+  save_img: true
+  suffix: ~  # add suffix to saved images, if None, use exp name
+  self_ensemble: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: true
+      better: higher
+    ssim:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: true
+      better: higher
